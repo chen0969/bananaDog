@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import BDhome from './views/BDhome.vue';
 </script>
 
 <template>
-  <HelloWorld />
+  <BDhome />
+  <!-- <Test /> -->
 </template>
