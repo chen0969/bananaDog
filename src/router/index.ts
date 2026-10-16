@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/Bdhome.vue'),
+      component: () => import('../views/BDhome.vue'),
       meta: { group: 'Home' } // 💡 貼上群組標籤
     },
     // #endregion

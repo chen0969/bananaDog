@@ -117,7 +117,7 @@
   </ToastProvider>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, watch } from 'vue';
 import {
   DialogRoot,
@@ -137,12 +137,22 @@ import {
   ToastViewport,
 } from 'reka-ui';
 
-// Emit an event to refresh the list in the parent after a successful post
-const emit = defineEmits(['dogAdded']);
+// Shape of the document returned by the Firestore REST API
+interface FirestoreDocument {
+  name: string;
+  fields: Record<string, unknown>;
+  createTime?: string;
+  updateTime?: string;
+}
 
-const dialogOpen = ref(false);
-const isPosting = ref(false);
-const postError = ref(null);
+// Emit an event to refresh the list in the parent after a successful post
+const emit = defineEmits<{
+  dogAdded: [document: FirestoreDocument];
+}>();
+
+const dialogOpen = ref<boolean>(false);
+const isPosting = ref<boolean>(false);
+const postError = ref<string | null>(null);
 
 const form = reactive({
   bdname: '',
@@ -150,7 +160,7 @@ const form = reactive({
 });
 
 // Reset the form every time the dialog closes
-watch(dialogOpen, (open) => {
+watch(dialogOpen, (open: boolean) => {
   if (!open) {
     form.bdname = '';
     form.bdparent = '';
@@ -158,10 +168,10 @@ watch(dialogOpen, (open) => {
   }
 });
 
-const toastOpen = ref(false);
-const toastMessage = ref('');
+const toastOpen = ref<boolean>(false);
+const toastMessage = ref<string>('');
 
-function showToast(message) {
+function showToast(message: string): void {
   toastMessage.value = message;
   // Close first so a new toast re-triggers even if one is already showing
   toastOpen.value = false;
@@ -170,9 +180,10 @@ function showToast(message) {
   });
 }
 
-const apiUrl = 'https://firestore.googleapis.com/v1/projects/sharpinven/databases/(default)/documents/bana_dogs';
+const apiUrl =
+  'https://firestore.googleapis.com/v1/projects/sharpinven/databases/(default)/documents/bana_dogs';
 
-const postBananaDog = async () => {
+const postBananaDog = async (): Promise<void> => {
   if (!form.bdname.trim()) return;
 
   isPosting.value = true;
@@ -188,8 +199,10 @@ const postBananaDog = async () => {
       bdlevel: { integerValue: '1' },
       bdalive: { booleanValue: true },
       bdhealthy: { booleanValue: true },
-      bdpic: { stringValue: 'https://placehold.co/400' },
+      bdpic: { stringValue: 'https://api.dicebear.com/10.x/voxel-art/svg?seed=' + form.bdparent.trim() },
       bdpick: { stringValue: '' },
+      bdage: { integerValue: '1' },
+      visittime: { integerValue: '1' }
     },
   };
 
@@ -203,19 +216,19 @@ const postBananaDog = async () => {
     });
 
     if (!response.ok) {
-      const errData = await response.json();
+      const errData: { error?: { message?: string } } = await response.json();
       throw new Error(errData.error?.message || `HTTP error! Status: ${response.status}`);
     }
 
-    const createdDocument = await response.json();
+    const createdDocument: FirestoreDocument = await response.json();
     dialogOpen.value = false;
     showToast('Banana Dog added successfully!');
 
     // Trigger refresh in parent
     emit('dogAdded', createdDocument);
-  } catch (err) {
+  } catch (err: unknown) {
     // Show the error inside the dialog so the user can fix it and retry
-    postError.value = err.message;
+    postError.value = err instanceof Error ? err.message : String(err);
   } finally {
     isPosting.value = false;
   }

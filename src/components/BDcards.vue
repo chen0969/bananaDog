@@ -101,6 +101,8 @@ onMounted(fetchDogs);
                   { label: 'Parent', value: dog.bdparent || '-' },
                   { label: 'Alive', value: dog.bdalive ? 'Yes' : 'No' },
                   { label: 'Healthy', value: dog.bdhealthy ? 'Yes' : 'No' },
+                  { label: 'Age', value: dog.bdage },
+                  { label: 'Visit Time', value: dog.visittime },
                 ]"
                 :key="row.label"
               >

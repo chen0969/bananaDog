@@ -15,6 +15,8 @@ export interface Dog {
   bdhealthy: boolean;
   bdpick: string;
   bdparent: string;
+  bdage: number;
+  visittime: number;
 }
 
 const COLLECTION = "bana_dogs";
