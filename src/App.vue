@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import BDhome from './views/BDhome.vue';
+import NavBar from './components/NavBar.vue';
 </script>
 
 <template>
-  <BDhome />
-  <!-- <Test /> -->
+  <main class="min-h-screen pb-16">
+    <RouterView />
+  </main>
+
+  <NavBar />
 </template>

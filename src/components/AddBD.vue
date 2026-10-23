@@ -43,6 +43,7 @@
                 v-model="form.bdname"
                 type="text"
                 required
+                maxlength="50"
                 placeholder="e.g. Han solo"
                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200"
               />
@@ -56,6 +57,7 @@
                 id="bdparent"
                 v-model="form.bdparent"
                 type="text"
+                maxlength="50"
                 placeholder="e.g. Chubaka"
                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200"
               />
@@ -136,18 +138,16 @@ import {
   ToastClose,
   ToastViewport,
 } from 'reka-ui';
+import { useDogs } from '../composables/useDogs';
 
-// Shape of the document returned by the Firestore REST API
-interface FirestoreDocument {
-  name: string;
-  fields: Record<string, unknown>;
-  createTime?: string;
-  updateTime?: string;
-}
+// Writes go through the Firebase SDK, which automatically attaches the
+// signed-in user's token so Firestore security rules can identify them.
+// (The old fetch() to the REST URL sent no token, so rules saw an anonymous user.)
+const { addDog } = useDogs();
 
-// Emit an event to refresh the list in the parent after a successful post
+// Tell the parent a dog was added (payload: the new Firestore document ID)
 const emit = defineEmits<{
-  dogAdded: [document: FirestoreDocument];
+  dogAdded: [id: string];
 }>();
 
 const dialogOpen = ref<boolean>(false);
@@ -180,55 +180,46 @@ function showToast(message: string): void {
   });
 }
 
-const apiUrl =
-  'https://firestore.googleapis.com/v1/projects/sharpinven/databases/(default)/documents/bana_dogs';
-
 const postBananaDog = async (): Promise<void> => {
-  if (!form.bdname.trim()) return;
+  const name = form.bdname.trim();
+  const parent = form.bdparent.trim();
+  if (!name) return;
 
   isPosting.value = true;
   postError.value = null;
 
-  // Firestore REST requires wrapping every value in its type object.
-  // Only bdname and bdparent come from the form; the rest are defaults.
-  const newDogPayload = {
-    fields: {
-      bdname: { stringValue: form.bdname.trim() },
-      bdparent: { stringValue: form.bdparent.trim() },
-      bdid: { integerValue: '0' }, // Firestore REST integers must be strings
-      bdlevel: { integerValue: '1' },
-      bdalive: { booleanValue: true },
-      bdhealthy: { booleanValue: true },
-      bdpic: { stringValue: 'https://api.dicebear.com/10.x/voxel-art/svg?seed=' + form.bdparent.trim() },
-      bdpick: { stringValue: '' },
-      bdage: { integerValue: '1' },
-      visittime: { integerValue: '1' }
-    },
-  };
-
   try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newDogPayload),
+    // Only bdname and bdparent come from the form; the rest are defaults.
+    const docRef = await addDog({
+      bdname: name,
+      bdparent: parent,
+      bdid: 0,
+      bdlevel: 1,
+      bdalive: true,
+      bdhealthy: true,
+      // encodeURIComponent keeps spaces / special characters from breaking the URL
+      bdpic: `https://api.dicebear.com/10.x/voxel-art/svg?seed=${encodeURIComponent(parent || name)}`,
+      bdpick: '',
+      bdage: 1,
+      visittime: 1,
     });
 
-    if (!response.ok) {
-      const errData: { error?: { message?: string } } = await response.json();
-      throw new Error(errData.error?.message || `HTTP error! Status: ${response.status}`);
-    }
-
-    const createdDocument: FirestoreDocument = await response.json();
     dialogOpen.value = false;
     showToast('Banana Dog added successfully!');
 
     // Trigger refresh in parent
-    emit('dogAdded', createdDocument);
+    emit('dogAdded', docRef.id);
   } catch (err: unknown) {
+    const code = (err as { code?: string }).code;
+    console.error('[AddBD] add failed:', code, err);
+
     // Show the error inside the dialog so the user can fix it and retry
-    postError.value = err instanceof Error ? err.message : String(err);
+    if (code === 'permission-denied') {
+      postError.value =
+        'Permission denied. Make sure you are signed in with a tester account and the data matches the Firestore rules.';
+    } else {
+      postError.value = err instanceof Error ? err.message : String(err);
+    }
   } finally {
     isPosting.value = false;
   }
