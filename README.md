@@ -1,8 +1,7 @@
-<font color="red">
+<font color="yellow">
 
-# API is not locked yet!! dont show to public yet!!!
+#  Api has set, this branch is for admin side.
 
-need to add api lock soon!
 </font>
 
 # Banana dog!!!!!

@@ -7,8 +7,7 @@ import Login from '../views/Login.vue';
 import Admin from '../views/admin/BDAdmin.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
-
+  history: createWebHistory(import.meta.env.BASE_URL), // "/bananaDog/"
   routes: [
     {
       path: '/Chome',
