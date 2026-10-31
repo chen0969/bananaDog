@@ -1,3 +1,185 @@
+<script setup lang="ts">
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue';
+import {
+  DialogRoot,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+  Label,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from 'reka-ui';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  type User,
+  type Unsubscribe,
+} from 'firebase/auth';
+import { auth } from '../firebase';
+
+// Show the token debug panel and console logs. Set to false before sharing the site.
+const SHOW_DEBUG = true;
+
+interface TokenInfo {
+  uid: string;
+  email: string | null;
+  emailVerified: boolean;
+  provider: string | null;
+  issuedAt: string;
+  expiresAt: string;
+  token: string;
+}
+
+const user = ref<User | null>(null);
+const authReady = ref<boolean>(false);
+
+const dialogOpen = ref<boolean>(false);
+const isLoggingIn = ref<boolean>(false);
+const loginError = ref<string | null>(null);
+
+const debugOpen = ref<boolean>(true);
+const tokenInfo = ref<TokenInfo | null>(null);
+const tokenError = ref<string | null>(null);
+const copied = ref<boolean>(false);
+
+const form = reactive({
+  email: '',
+  password: '',
+});
+
+const tokenPreview = computed<string>(() => {
+  const t = tokenInfo.value?.token ?? '';
+  return t.length > 40 ? `${t.slice(0, 24)} ... ${t.slice(-12)}` : t;
+});
+
+function formatTime(value: string): string {
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? value : d.toLocaleString();
+}
+
+// Read the ID token and its details (this is what Firestore rules see)
+async function loadTokenInfo(u: User, forceRefresh = false): Promise<void> {
+  tokenError.value = null;
+  try {
+    const r = await u.getIdTokenResult(forceRefresh);
+    tokenInfo.value = {
+      uid: u.uid,
+      email: u.email,
+      emailVerified: r.claims.email_verified === true,
+      provider: r.signInProvider,
+      issuedAt: r.issuedAtTime,
+      expiresAt: r.expirationTime,
+      token: r.token,
+    };
+    if (SHOW_DEBUG) {
+      console.log('[Login] signed in. Token details:', {
+        ...tokenInfo.value,
+        token: `${r.token.slice(0, 24)}... (${r.token.length} chars)`,
+        claims: r.claims,
+      });
+    }
+  } catch (err: unknown) {
+    tokenInfo.value = null;
+    tokenError.value = err instanceof Error ? err.message : String(err);
+    console.error('[Login] could not read the token:', err);
+  }
+}
+
+// Firebase keeps the session after a page refresh; this restores it
+// and keeps `user` in sync with sign-in / sign-out.
+let unsubscribe: Unsubscribe | null = null;
+
+onMounted(() => {
+  unsubscribe = onAuthStateChanged(auth, (u) => {
+    user.value = u;
+    authReady.value = true;
+    if (u) {
+      void loadTokenInfo(u);
+    } else {
+      tokenInfo.value = null;
+      tokenError.value = null;
+      if (SHOW_DEBUG) console.log('[Login] signed out');
+    }
+  });
+});
+
+onUnmounted(() => {
+  unsubscribe?.();
+});
+
+// Reset the form every time the dialog closes
+watch(dialogOpen, (open: boolean) => {
+  if (!open) {
+    form.email = '';
+    form.password = '';
+    loginError.value = null;
+  }
+});
+
+function friendlyError(err: unknown): string {
+  const code = (err as { code?: string }).code;
+  switch (code) {
+    case 'auth/invalid-credential':
+    case 'auth/wrong-password':
+    case 'auth/user-not-found':
+      return 'Wrong email or password.';
+    case 'auth/invalid-email':
+      return 'Please enter a valid email address.';
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Please wait a moment and try again.';
+    case 'auth/operation-not-allowed':
+      return 'Email/Password sign-in is not enabled in the Firebase console.';
+    case 'auth/network-request-failed':
+      return 'Network error. Check your connection and try again.';
+    default:
+      return err instanceof Error ? err.message : String(err);
+  }
+}
+
+async function login(): Promise<void> {
+  isLoggingIn.value = true;
+  loginError.value = null;
+
+  try {
+    await signInWithEmailAndPassword(auth, form.email.trim(), form.password);
+    dialogOpen.value = false;
+  } catch (err: unknown) {
+    const code = (err as { code?: string }).code;
+    console.error('[Login] sign-in failed:', code, err);
+    loginError.value = friendlyError(err);
+  } finally {
+    isLoggingIn.value = false;
+  }
+}
+
+async function logout(): Promise<void> {
+  await signOut(auth);
+}
+
+async function refreshToken(): Promise<void> {
+  if (user.value) await loadTokenInfo(user.value, true);
+}
+
+async function copyToken(): Promise<void> {
+  if (!tokenInfo.value) return;
+  try {
+    await navigator.clipboard.writeText(tokenInfo.value.token);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 1500);
+  } catch (err: unknown) {
+    console.error('[Login] could not copy the token:', err);
+  }
+}
+</script>
+
 <template>
   <div class="flex flex-col gap-3">
     <div class="flex items-center gap-3">
@@ -203,184 +385,3 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue';
-import {
-  DialogRoot,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-  Label,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from 'reka-ui';
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  type User,
-  type Unsubscribe,
-} from 'firebase/auth';
-import { auth } from '../firebase';
-
-// Show the token debug panel and console logs. Set to false before sharing the site.
-const SHOW_DEBUG = true;
-
-interface TokenInfo {
-  uid: string;
-  email: string | null;
-  emailVerified: boolean;
-  provider: string | null;
-  issuedAt: string;
-  expiresAt: string;
-  token: string;
-}
-
-const user = ref<User | null>(null);
-const authReady = ref<boolean>(false);
-
-const dialogOpen = ref<boolean>(false);
-const isLoggingIn = ref<boolean>(false);
-const loginError = ref<string | null>(null);
-
-const debugOpen = ref<boolean>(true);
-const tokenInfo = ref<TokenInfo | null>(null);
-const tokenError = ref<string | null>(null);
-const copied = ref<boolean>(false);
-
-const form = reactive({
-  email: '',
-  password: '',
-});
-
-const tokenPreview = computed<string>(() => {
-  const t = tokenInfo.value?.token ?? '';
-  return t.length > 40 ? `${t.slice(0, 24)} ... ${t.slice(-12)}` : t;
-});
-
-function formatTime(value: string): string {
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? value : d.toLocaleString();
-}
-
-// Read the ID token and its details (this is what Firestore rules see)
-async function loadTokenInfo(u: User, forceRefresh = false): Promise<void> {
-  tokenError.value = null;
-  try {
-    const r = await u.getIdTokenResult(forceRefresh);
-    tokenInfo.value = {
-      uid: u.uid,
-      email: u.email,
-      emailVerified: r.claims.email_verified === true,
-      provider: r.signInProvider,
-      issuedAt: r.issuedAtTime,
-      expiresAt: r.expirationTime,
-      token: r.token,
-    };
-    if (SHOW_DEBUG) {
-      console.log('[Login] signed in. Token details:', {
-        ...tokenInfo.value,
-        token: `${r.token.slice(0, 24)}... (${r.token.length} chars)`,
-        claims: r.claims,
-      });
-    }
-  } catch (err: unknown) {
-    tokenInfo.value = null;
-    tokenError.value = err instanceof Error ? err.message : String(err);
-    console.error('[Login] could not read the token:', err);
-  }
-}
-
-// Firebase keeps the session after a page refresh; this restores it
-// and keeps `user` in sync with sign-in / sign-out.
-let unsubscribe: Unsubscribe | null = null;
-
-onMounted(() => {
-  unsubscribe = onAuthStateChanged(auth, (u) => {
-    user.value = u;
-    authReady.value = true;
-    if (u) {
-      void loadTokenInfo(u);
-    } else {
-      tokenInfo.value = null;
-      tokenError.value = null;
-      if (SHOW_DEBUG) console.log('[Login] signed out');
-    }
-  });
-});
-
-onUnmounted(() => {
-  unsubscribe?.();
-});
-
-// Reset the form every time the dialog closes
-watch(dialogOpen, (open: boolean) => {
-  if (!open) {
-    form.email = '';
-    form.password = '';
-    loginError.value = null;
-  }
-});
-
-function friendlyError(err: unknown): string {
-  const code = (err as { code?: string }).code;
-  switch (code) {
-    case 'auth/invalid-credential':
-    case 'auth/wrong-password':
-    case 'auth/user-not-found':
-      return 'Wrong email or password.';
-    case 'auth/invalid-email':
-      return 'Please enter a valid email address.';
-    case 'auth/too-many-requests':
-      return 'Too many attempts. Please wait a moment and try again.';
-    case 'auth/operation-not-allowed':
-      return 'Email/Password sign-in is not enabled in the Firebase console.';
-    case 'auth/network-request-failed':
-      return 'Network error. Check your connection and try again.';
-    default:
-      return err instanceof Error ? err.message : String(err);
-  }
-}
-
-async function login(): Promise<void> {
-  isLoggingIn.value = true;
-  loginError.value = null;
-
-  try {
-    await signInWithEmailAndPassword(auth, form.email.trim(), form.password);
-    dialogOpen.value = false;
-  } catch (err: unknown) {
-    const code = (err as { code?: string }).code;
-    console.error('[Login] sign-in failed:', code, err);
-    loginError.value = friendlyError(err);
-  } finally {
-    isLoggingIn.value = false;
-  }
-}
-
-async function logout(): Promise<void> {
-  await signOut(auth);
-}
-
-async function refreshToken(): Promise<void> {
-  if (user.value) await loadTokenInfo(user.value, true);
-}
-
-async function copyToken(): Promise<void> {
-  if (!tokenInfo.value) return;
-  try {
-    await navigator.clipboard.writeText(tokenInfo.value.token);
-    copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 1500);
-  } catch (err: unknown) {
-    console.error('[Login] could not copy the token:', err);
-  }
-}
-</script>

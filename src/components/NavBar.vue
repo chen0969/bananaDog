@@ -7,7 +7,7 @@ import { Home, DoorOpen, Newspaper, Settings, Key, UserStar } from 'lucide-vue-n
     <div class="mx-auto flex h-16 max-w-md items-center justify-around">
 
       <!-- home -->
-      <RouterLink to="/Chome" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
+      <RouterLink to="/" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
         active-class="text-blue-600">
         <Home :size="22" />
         <span class="text-xs">Home</span>

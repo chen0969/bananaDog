@@ -57,7 +57,7 @@ onMounted(fetchDogs);
               <AvatarImage
                 :src="dog.bdpic"
                 :alt="dog.bdname"
-                class="h-full w-full object-cover"
+                class="h-full object-cover"
                 :class="{ grayscale: !dog.bdalive }"
               />
               <AvatarFallback
@@ -88,7 +88,7 @@ onMounted(fetchDogs);
                 class="rounded-full px-2.5 py-0.5 text-xs font-semibold"
                 :class="dog.bdhealthy ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'"
               >
-                {{ dog.bdhealthy ? "Healthy" : "Unhealthy" }}
+                {{ dog.bdhealthy ? "Healthy" : "Sick" }}
               </span>
             </div>
 
@@ -96,11 +96,10 @@ onMounted(fetchDogs);
             <dl class="text-sm">
               <template
                 v-for="(row, i) in [
+                  { label: 'email', value: dog.bdemail },
                   { label: 'Dog ID', value: dog.bdid },
                   { label: 'Level', value: dog.bdlevel },
                   { label: 'Parent', value: dog.bdparent || '-' },
-                  { label: 'Alive', value: dog.bdalive ? 'Yes' : 'No' },
-                  { label: 'Healthy', value: dog.bdhealthy ? 'Yes' : 'No' },
                   { label: 'Age', value: dog.bdage },
                   { label: 'Visit Time', value: dog.visittime },
                 ]"

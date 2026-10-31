@@ -4,13 +4,14 @@ import CRoom from '../views/client/Room.vue';
 import CNews from '../views/client/News.vue';
 import CSetting from '../views/client/Setting.vue';
 import Login from '../views/Login.vue';
-import Admin from '../views/admin/BDAdmin.vue';
+import Admin from '../views/admin/BDadmin.vue';
+import SignUp from '../views/SignUp.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL), // "/bananaDog/"
   routes: [
     {
-      path: '/Chome',
+      path: '/',
       name: 'home',
       component: CHome,
     },
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/Admin',
       name: 'admin',
       component: Admin,
+    },
+    {
+      path: '/Signup',
+      name: 'signup',
+      component: SignUp,
     }
   ],
 })

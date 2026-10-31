@@ -1,1 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Basic&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Space+Grotesk:wght@300..700&display=swap');
 @import "tailwindcss";
+
+:root {
+    /* Color Palette */
+    --color-bd-shadow: #FBB51F;
+    --color-info: #2658C6;
+    --color-alert: #D31818;
+    --color-earth-body: #B45D32;
+    --color-grass-shadow: #0B3E25;
+    --color-grass-mid: #22A63F;
+    --color-grass-light: #7DE542;
+    --color-bd-body: #FDDF2E;
+    --color-cloud-shadow: #9FD1FA;
+    --color-box-mark: #68230B;
+    --color-box-body: #FBB51F;
+
+    /* Typography */
+    --font-h1: 'Space Grotesk', 'Google Sans', sans-serif;
+    --font-h2-h6: 'Basic', 'Google Sans', sans-serif;
+    --font-body: 'IBM Plex Serif', 'Google Sans', serif;
+    --font-fallback: 'Google Sans', sans-serif;
+}
+
+/* Basic Accessibility & Resets */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-fallback);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Rules */
+h1 { font-family: var(--font-h1); font-weight: 700; }
+h2, h3, h4, h5, h6 { font-family: var(--font-h2-h6); font-weight: 400; }
+p, .popup, .details { font-family: var(--font-body); font-weight: 100; }
+
+/* Accessibility: Focus States */
+:focus-visible {
+    outline: 3px solid var(--color-info);
+    outline-offset: 2px;
+}
+
+/* Responsive Web Design (RWD) Breakpoints */
+
+/* Mobile First (iPhone 14) */
+html { font-size: 16px; }
+
+/* Tablet (iPad mini) */
+@media (min-width: 768px) {
+    html { font-size: 18px; }
+}
+
+/* Desktop (MacBook Air 13") */
+@media (min-width: 1280px) {
+    html { font-size: 20px; }
+}
+
+/* Wide Screens (Bigger than 15") */
+@media (min-width: 1600px) {
+    html { font-size: 22px; }
+}
