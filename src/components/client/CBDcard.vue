@@ -3,6 +3,8 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { getAuth, onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import { useDogs } from "../../composables/useDogs";
 
+import BDdog from '../../assets/bd-dog.svg';
+
 const { dog, loading, error, fetchDogByEmail } = useDogs();
 const searched = ref(false);
 
@@ -35,11 +37,13 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <h3 v-if="!userEmail" class="text-gray-500">Login to see your banana dog😭</h3>
   <p v-if="error" class="text-red-600">{{ error }}</p>
-  <p v-else-if="loading" class="text-gray-500">查詢中...</p>
+  <p v-else-if="loading" class="text-gray-500">Loading...</p>
   <div v-else-if="dog">
+    <img :src="BDdog" alt="BDdog" class="w-50" />
     <h3 class="text-xl font-semibold">{{ dog.bdname }}</h3>
-    <p>Lv {{ dog.bdlevel }} · 年齡 {{ dog.bdage }} · 上線次數 {{ dog.visittime }}</p>
+    <p>Level: {{ dog.bdlevel }} · Age {{ dog.bdage }} · Visit {{ dog.visittime }}</p>
   </div>
-  <p v-else-if="searched" class="text-gray-500">找不到這個信箱的狗狗。</p>
+  <p v-else-if="searched" class="text-gray-500">Can't find your banana dog 😭</p>
 </template>

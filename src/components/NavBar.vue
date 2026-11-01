@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Home, DoorOpen, Newspaper, Settings, Key, UserStar } from 'lucide-vue-next'
+import { Home, DoorOpen, Newspaper, Settings, Key} from 'lucide-vue-next'
 </script>
 
 <template>
@@ -17,21 +17,14 @@ import { Home, DoorOpen, Newspaper, Settings, Key, UserStar } from 'lucide-vue-n
       <RouterLink to="/CRoom" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
         active-class="text-blue-600">
         <DoorOpen :size="22" />
-        <span class="text-xs">Room</span>
-      </RouterLink>
-
-      <!-- news -->
-      <RouterLink to="/CNews" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
-        active-class="text-blue-600">
-        <Newspaper :size="22" />
-        <span class="text-xs">News</span>
+        <span class="text-xs">MyRoom</span>
       </RouterLink>
 
       <!-- setting -->
-      <RouterLink to="/CSetting" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
+      <RouterLink to="/Admin" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
         active-class="text-blue-600">
         <Settings :size="22" />
-        <span class="text-xs">Setting</span>
+        <span class="text-xs">Admin</span>
       </RouterLink>
 
       <!-- login -->
@@ -41,11 +34,11 @@ import { Home, DoorOpen, Newspaper, Settings, Key, UserStar } from 'lucide-vue-n
         <span class="text-xs">Login</span>
       </RouterLink>
 
-      <!-- admin -->
-      <RouterLink to="/Admin" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
+      <!-- news -->
+      <RouterLink to="/CNews" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
         active-class="text-blue-600">
-        <UserStar :size="22" />
-        <span class="text-xs">Admin</span>
+        <Newspaper :size="22" />
+        <span class="text-xs">News</span>
       </RouterLink>
 
     </div>
