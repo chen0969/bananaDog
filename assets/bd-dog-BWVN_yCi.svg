@@ -37,7 +37,7 @@
 	}
 
 	#dog {
-		transform-origin: center;
+		transform-origin: bottom center;
 		animation: dogjump 2s backwards infinite;
 	}
 </style>
