@@ -1,7 +1,7 @@
 <font color="yellow">
 
-# Client branch
-##  Api has set, this branch is for client side.
+# Admin branch
+##  Api has set, this branch is for admin inner test use.
 
 </font>
 
