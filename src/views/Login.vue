@@ -5,7 +5,7 @@ import bdog from '../assets/bd-dog.svg';
 
 <template>
     <div class="flex flex-col items-center gap-3 pt-5">
-        <h1 class="text-2xl font-bold text-center">Let's Meet your dog!</h1>
+        <h1 class="text-2xl font-bold text-center subpixel-antialiased">Let's Meet your dog!</h1>
         <img :src="bdog" alt="bdog" class="w-full h-full object-cover" />
     </div>
     <div class="flex flex-col items-center">

@@ -4,8 +4,7 @@
       <div class="my-4">
         <DialogTrigger as-child>
           <button
-            class="inline-flex items-center gap-2 rounded-md border border-yellow-600 bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition hover:bg-yellow-400"
-          >
+            class="inline-flex items-center gap-2 rounded-md border border-yellow-600 bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition hover:bg-yellow-400">
             Add New Banana Dog
           </button>
         </DialogTrigger>
@@ -14,8 +13,7 @@
       <DialogPortal>
         <DialogOverlay class="fixed inset-0 z-40 bg-black/50" />
         <DialogContent
-          class="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl focus:outline-none"
-        >
+          class="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl focus:outline-none">
           <div class="mb-4 flex items-start justify-between">
             <div>
               <DialogTitle class="text-lg font-semibold text-gray-900">
@@ -25,10 +23,7 @@
                 Fill in the name and parent. Other fields use default values.
               </DialogDescription>
             </div>
-            <DialogClose
-              aria-label="Close"
-              class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
-            >
+            <DialogClose aria-label="Close" class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700">
               <span aria-hidden="true">×</span>
             </DialogClose>
           </div>
@@ -38,29 +33,16 @@
               <Label for="bdname" class="mb-1 block text-sm font-medium text-gray-700">
                 Name <span class="text-red-500">*</span>
               </Label>
-              <input
-                id="bdname"
-                v-model="form.bdname"
-                type="text"
-                required
-                maxlength="50"
-                placeholder="e.g. Han solo"
-                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200"
-              />
+              <input id="bdname" v-model="form.bdname" type="text" required maxlength="50" placeholder="e.g. Han solo"
+                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200" />
             </div>
 
             <div>
               <Label for="bdparent" class="mb-1 block text-sm font-medium text-gray-700">
                 Parent
               </Label>
-              <input
-                id="bdparent"
-                v-model="form.bdparent"
-                type="text"
-                maxlength="50"
-                placeholder="e.g. Chubaka"
-                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200"
-              />
+              <input id="bdparent" v-model="form.bdparent" type="text" maxlength="50" placeholder="e.g. Chubaka"
+                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-200" />
             </div>
 
             <p v-if="postError" class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -69,23 +51,15 @@
 
             <div class="flex justify-end gap-2 pt-2">
               <DialogClose as-child>
-                <button
-                  type="button"
-                  :disabled="isPosting"
-                  class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-60"
-                >
+                <button type="button" :disabled="isPosting"
+                  class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-60">
                   Cancel
                 </button>
               </DialogClose>
-              <button
-                type="submit"
-                :disabled="isPosting || !form.bdname.trim()"
-                class="inline-flex items-center gap-2 rounded-md border border-yellow-600 bg-yellow-300 px-4 py-2 text-sm font-bold text-gray-900 transition hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <span
-                  v-if="isPosting"
-                  class="h-4 w-4 animate-spin rounded-full border-2 border-gray-900 border-t-transparent"
-                />
+              <button type="submit" :disabled="isPosting || !form.bdname.trim()"
+                class="inline-flex items-center gap-2 rounded-md border border-yellow-600 bg-yellow-300 px-4 py-2 text-sm font-bold text-gray-900 transition hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-60">
+                <span v-if="isPosting"
+                  class="h-4 w-4 animate-spin rounded-full border-2 border-gray-900 border-t-transparent" />
                 {{ isPosting ? 'Adding...' : 'Add' }}
               </button>
             </div>
@@ -95,27 +69,21 @@
     </DialogRoot>
 
     <!-- Success toast -->
-    <ToastRoot
-      v-model:open="toastOpen"
-      class="flex items-start gap-3 rounded-lg border border-green-300 bg-white p-4 shadow-lg"
-    >
+    <ToastRoot v-model:open="toastOpen"
+      class="flex items-start gap-3 rounded-lg border border-green-300 bg-white p-4 shadow-lg">
       <div class="flex-1">
         <ToastTitle class="text-sm font-semibold text-green-700">Success</ToastTitle>
         <ToastDescription class="mt-1 text-sm text-gray-600">
           {{ toastMessage }}
         </ToastDescription>
       </div>
-      <ToastClose
-        aria-label="Close"
-        class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
-      >
+      <ToastClose aria-label="Close" class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700">
         <span aria-hidden="true">×</span>
       </ToastClose>
     </ToastRoot>
 
     <ToastViewport
-      class="fixed bottom-4 right-4 z-50 m-0 flex w-96 max-w-[calc(100vw-2rem)] list-none flex-col gap-2 p-0 outline-none"
-    />
+      class="fixed bottom-4 right-4 z-50 m-0 flex w-96 max-w-[calc(100vw-2rem)] list-none flex-col gap-2 p-0 outline-none" />
   </ToastProvider>
 </template>
 
@@ -139,6 +107,7 @@ import {
   ToastViewport,
 } from 'reka-ui';
 import { useDogs } from '../composables/useDogs';
+import { auth } from '../firebase';
 
 // Writes go through the Firebase SDK, which automatically attaches the
 // signed-in user's token so Firestore security rules can identify them.
@@ -187,12 +156,18 @@ const postBananaDog = async (): Promise<void> => {
 
   isPosting.value = true;
   postError.value = null;
-
+  const email = auth.currentUser?.email?.toLowerCase();
+  if (!email) {
+    postError.value = 'Please sign in first.';
+    isPosting.value = false;
+    return;
+  }
   try {
     // Only bdname and bdparent come from the form; the rest are defaults.
     const docRef = await addDog({
       bdname: name,
       bdparent: parent,
+      bdemail: email, 
       bdid: 0,
       bdlevel: 1,
       bdalive: true,

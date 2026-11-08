@@ -11,9 +11,11 @@
     --color-grass-mid: #22A63F;
     --color-grass-light: #7DE542;
     --color-bd-body: #FDDF2E;
-    --color-cloud-shadow: #9FD1FA;
+    --color-cloud-shadow: #cee9ff;
+    --color-sky-darker: #87CBFF;
     --color-box-mark: #68230B;
     --color-box-body: #FBB51F;
+    --color-text-box-bg: #ffecc3;
 
     /* Typography */
     --font-h1: 'Space Grotesk', 'Google Sans', sans-serif;
@@ -32,10 +34,11 @@ body {
     font-family: var(--font-fallback);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    background-image: linear-gradient(to bottom, var(--color-sky-darker), var(--color-cloud-shadow));
 }
 
 /* Typography Rules */
-h1 { font-family: var(--font-h1); font-weight: 700; }
+h1 { font-family: var(--font-h1); font-weight: 700; color: var(--color-bd-body); text-shadow: 2px 2px var(--color-box-mark); }
 h2, h3, h4, h5, h6 { font-family: var(--font-h2-h6); font-weight: 400; }
 p, .popup, .details { font-family: var(--font-body); font-weight: 100; }
 
@@ -49,6 +52,41 @@ p, .popup, .details { font-family: var(--font-body); font-weight: 100; }
 
 /* Mobile First (iPhone 14) */
 html { font-size: 16px; }
+
+.reg-text-box{
+    color: var(--color-box-mark);
+    background-color: var(--color-text-box-bg);
+    border: 0.2rem solid var(--color-box-mark);
+    border-radius: 0.5rem;
+}
+
+.subheader {
+    color: var(--color-box-mark);
+    background-color: white;
+    height: 10vh;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+.subfooter{
+    color: var(--color-box-mark);
+    background-color: var(--color-box-body);
+    height: 10vh;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Tablet (iPad mini) */
 @media (min-width: 768px) {

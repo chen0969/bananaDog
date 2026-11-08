@@ -66,25 +66,25 @@ export function useDogs() {
 
   // Fetch a single dog by email
   async function fetchDogByEmail(email: string) {
-  loading.value = true;
-  error.value = null;
-  dog.value = null;
-  try {
-    const q = query(
-      dogsCol,
-      where("bdemail", "==", email.trim().toLowerCase()),
-      limit(1),
-    );
-    const snap = await getDocs(q);
-    dog.value = snap.empty ? null : toDog(snap.docs[0]);
-  } catch (e: any) {
-    error.value = e.message;
-  } finally {
-    loading.value = false;
+    loading.value = true;
+    error.value = null;
+    dog.value = null;
+    try {
+      const q = query(
+        dogsCol,
+        where("bdemail", "==", email.trim().toLowerCase()),
+        limit(1),
+      );
+      const snap = await getDocs(q);
+      dog.value = snap.empty ? null : toDog(snap.docs[0]);
+    } catch (e: any) {
+      error.value = e.message;
+    } finally {
+      loading.value = false;
+    }
   }
-}
 
-  const addDog = (dog: Omit<Dog, "id">) => addDoc(dogsCol, dog);
+  const addDog = (newDog: Omit<Dog, "id">) => addDoc(dogsCol, newDog);
   const updateDog = (id: string, data: Partial<Dog>) => updateDoc(doc(db, COLLECTION, id), data);
   const removeDog = (id: string) => deleteDoc(doc(db, COLLECTION, id));
 

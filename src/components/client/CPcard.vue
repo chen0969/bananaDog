@@ -35,7 +35,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section>
+  <!-- sub header -->
+  <section class="subheader">
+    <h1>My Room</h1>
+  </section>
+  <!-- main -->
+  <section class="game-container">
     <h3 v-if="!userEmail" class="text-gray-500">Login to see your banana dog😭</h3>
     <p v-if="error" class="text-red-600">{{ error }}</p>
     <p v-else-if="loading" class="text-gray-500">Loading...</p>
@@ -45,5 +50,9 @@ onUnmounted(() => {
       <p>Level: {{ dog.bdlevel }} · Age {{ dog.bdage }} · Visit {{ dog.visittime }}</p>
     </div>
     <p v-else-if="searched" class="text-gray-500">Can't find your banana dog 😭</p>
+  </section>
+  <!-- sub footer -->
+  <section class="subfooter">
+    <p>footer</p>
   </section>
 </template>
