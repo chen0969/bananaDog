@@ -41,10 +41,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <img :src="Dish" alt="Dish" class="absolute z-0" />
-  <h3 v-if="!userEmail" class="text-gray-500">Login to see your banana dog😭</h3>
+  <h3 v-if="!userEmail" class="text-gray-500">Login to see your dog photo!</h3>
   <p v-if="error" class="text-red-600">{{ error }}</p>
   <p v-else-if="loading" class="text-gray-500">Loading...</p>
-  <img v-else-if="dog" :src="BDdog" alt="BDdog" class="w-full z-1" @click="emit('touch')" />
+  <div v-else-if="dog" class="relative flex flex-col">
+    <img :src="BDdog" alt="BDdog" class="w-full z-1" @click="emit('touch')" />
+    <img :src="Dish" alt="Dish" class="absolute w-full" />
+  </div>
   <p v-else-if="searched" class="text-gray-500">Can't find your banana dog 😭</p>
 </template>

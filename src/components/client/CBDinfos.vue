@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { ChessPawn } from 'lucide-vue-next';
 import { getAuth, onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import { useDogs } from "../../composables/useDogs";
 import BDava from '../../assets/dogDeco/ui/avatar.svg'
@@ -40,18 +41,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <h3 v-if="!userEmail" class="text-gray-500">Login to see your banana dog😭</h3>
+  <h3 v-if="!userEmail" class="text-gray-500">Login to see your dog level!</h3>
   <p v-if="error" class="text-red-600">{{ error }}</p>
   <p v-else-if="loading" class="text-gray-500">Loading...</p>
   <!-- if data okay -->
-  <div v-else-if="dog" class="flex flex-row w-full items-center justify-between pt-5">
+  <div v-else-if="dog" class="flex flex-row w-screen items-center justify-between">
     <div class="basis-lg flex flex-row items-center max-w-35">
       <span class="basis-3xs z-1"><img class="w-full" :src="BDava" alt="BDava" /></span>
       <h2 class="relative basis-md reg-text-box text-end p-1 pr-3 right-3 z-0">{{
         dog.bdname }}</h2>
     </div>
     <div>
-      <h2 class="text-end reg-text-box p-1">Lv: {{ dog.bdlevel }}</h2>
+      <h2 class="text-end reg-text-box p-1 flex flex-row items-center"> <ChessPawn :size="15" />{{ dog.bdlevel }}</h2>
     </div>
     <!-- <p>Level: {{ dog.bdlevel }} · Age {{ dog.bdage }} · Visit {{ dog.visittime }}</p> -->
   </div>

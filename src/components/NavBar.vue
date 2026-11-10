@@ -3,8 +3,8 @@ import { Home, DoorOpen, Newspaper, Settings, Key} from 'lucide-vue-next'
 </script>
 
 <template>
-  <nav class="fixed bottom-0 left-0 right-0 z-50 border-t bg-white">
-    <div class="mx-auto flex h-16 max-w-md items-center justify-around">
+  <nav>
+    <div class="flex items-center justify-around mt-2">
 
       <!-- home -->
       <RouterLink to="/" class="flex h-full flex-1 flex-col items-center justify-center gap-1 text-gray-500"
