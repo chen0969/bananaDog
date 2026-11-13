@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import CHome from '../views/client/Home.vue';
-import CRoom from '../views/client/Room.vue';
-import CNews from '../views/client/News.vue';
-import CSetting from '../views/client/Setting.vue';
+import CHome from '../views/client/VHome.vue';
+import CRoom from '../views/client/VRoom.vue';
+import CNews from '../views/client/VNews.vue';
+import CSetting from '../views/client/VSetting.vue';
 import Login from '../views/Login.vue';
-import Admin from '../views/admin/BDadmin.vue';
+import Admin from '../views/admin/VBDadmin.vue';
 import SignUp from '../views/SignUp.vue';
 
 const router = createRouter({

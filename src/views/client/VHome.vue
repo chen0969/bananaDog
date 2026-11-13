@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Cimg from '../../components/client/CBDimg.vue';
-import Cemo from '../../components/client/Cemo.vue';
+import Cemo from '../../components/client/CBDemo.vue';
 import Cinfos from '../../components/client/CBDinfos.vue';
 import Subfooter from '../../components/Subfooter.vue';
 const emo = ref<InstanceType<typeof Cemo> | null>(null);
@@ -15,8 +15,8 @@ const showEmo = () => {
 <template>
   <div class="flex flex-col items-center justify-between">
     <!-- name and level -->
-    <section>
-      <Cinfos  />
+    <section >
+      <Cinfos />
     </section>
 
     <!-- photo and basic info section -->

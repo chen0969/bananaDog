@@ -35,24 +35,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- sub header -->
-  <section class="subheader">
-    <h1>My Room</h1>
-  </section>
   <!-- main -->
-  <section class="game-container">
-    <h3 v-if="!userEmail" class="text-gray-500">Login to see your banana dog😭</h3>
+  <section>
+    <h3 v-if="!userEmail" class="text-gray-500">Login to see your profile</h3>
     <p v-if="error" class="text-red-600">{{ error }}</p>
     <p v-else-if="loading" class="text-gray-500">Loading...</p>
     <div v-else-if="dog">
-      <img :src="dog.bdpic" :alt="dog.bdname" class="h-full object-cover" :class="{ grayscale: !dog.bdalive }" />
-      <h3 class="text-xl font-semibold">{{ dog.bdparent }}</h3>
-      <p>Level: {{ dog.bdlevel }} · Age {{ dog.bdage }} · Visit {{ dog.visittime }}</p>
+      <img :src="dog.bdpic" :alt="dog.bdname" class="w-full" :class="{ grayscale: !dog.bdalive }" />
     </div>
-    <p v-else-if="searched" class="text-gray-500">Can't find your banana dog 😭</p>
-  </section>
-  <!-- sub footer -->
-  <section class="subfooter">
-    <p>footer</p>
+    <p v-else-if="searched" class="text-gray-500">Can't find your profile</p>
   </section>
 </template>

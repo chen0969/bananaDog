@@ -45,7 +45,7 @@ onUnmounted(() => {
   <p v-if="error" class="text-red-600">{{ error }}</p>
   <p v-else-if="loading" class="text-gray-500">Loading...</p>
   <!-- if data okay -->
-  <div v-else-if="dog" class="flex flex-row w-screen items-center justify-between">
+  <div v-else-if="dog" class="flex flex-row w-screen items-center justify-between pr-2 pl-2">
     <div class="basis-lg flex flex-row items-center max-w-35">
       <span class="basis-3xs z-1"><img class="w-full" :src="BDava" alt="BDava" /></span>
       <h2 class="relative basis-md reg-text-box text-end p-1 pr-3 right-3 z-0">{{

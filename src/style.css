@@ -56,18 +56,8 @@ html { font-size: 16px; }
 .reg-text-box{
     color: var(--color-box-mark);
     background-color: var(--color-text-box-bg);
-    border: 0.2rem solid var(--color-box-mark);
+    border: 0.15rem solid var(--color-box-mark);
     border-radius: 0.5rem;
-}
-
-.subheader {
-    color: var(--color-box-mark);
-    background-color: white;
-    height: 10vh;
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
 }
 
 .game-container {
