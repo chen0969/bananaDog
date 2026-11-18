@@ -4,7 +4,6 @@ import CRoom from '../views/client/VRoom.vue';
 import CNews from '../views/client/VNews.vue';
 import CSetting from '../views/client/VSetting.vue';
 import Login from '../views/Login.vue';
-import Admin from '../views/admin/VBDadmin.vue';
 import SignUp from '../views/SignUp.vue';
 
 const router = createRouter({
@@ -34,11 +33,6 @@ const router = createRouter({
       path: '/CSetting',
       name: 'setting',
       component: CSetting,
-    },
-    {
-      path: '/Admin',
-      name: 'admin',
-      component: Admin,
     },
     {
       path: '/Signup',

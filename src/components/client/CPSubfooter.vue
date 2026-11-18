@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { getAuth, onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
-import { useDogs } from "../composables/useDogs";
-import Floor from '../assets/dogDeco/floor.svg';
-import { Laugh } from 'lucide-vue-next';
+import { useDogs } from "../../composables/useDogs";
+import Floor from '../../assets/dogDeco/floor.svg';
+import Dogav from '../../assets/bd-dog.svg';
 const { dog, loading, error, fetchDogByEmail } = useDogs();
 const searched = ref(false);
 
@@ -46,7 +46,7 @@ onUnmounted(() => {
   <p v-else-if="loading" class="text-gray-500">Loading...</p>
   <!-- if data okay -->
   <div v-else-if="dog" class="flex flex-col items-center justify-between w-screen">
-    <h2 class="text-center reg-text-box p-2 flex items-center"> <Laugh :size="20" />{{ dog.bdpick }}</h2>
+    <img class="max-h-50 absolute bottom-10 right-10" :src="Dogav" alt="Dog" />
     <img class="w-full mt-2" :src="Floor" alt="Floor" />
   </div>
   <p v-else-if="searched" class="text-gray-500">Can't find your banana dog 😭</p>

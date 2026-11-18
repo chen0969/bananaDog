@@ -173,7 +173,7 @@ const postBananaDog = async (): Promise<void> => {
       bdalive: true,
       bdhealthy: true,
       // encodeURIComponent keeps spaces / special characters from breaking the URL
-      bdpic: `https://api.dicebear.com/10.x/voxel-art/svg?seed=${encodeURIComponent(parent || name)}`,
+      bdpic: `https://api.dicebear.com/10.x/voxel-art/svg?animationProbability=100&backgroundColor=&seed=${encodeURIComponent(parent || name)}`,
       bdpick: '',
       bdage: 1,
       visittime: 1,

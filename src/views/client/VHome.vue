@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Cimg from '../../components/client/CBDimg.vue';
 import Cemo from '../../components/client/CBDemo.vue';
 import Cinfos from '../../components/client/CBDinfos.vue';
-import Subfooter from '../../components/Subfooter.vue';
+import Subfooter from '../../components/client/CBDSubfooter.vue';
 const emo = ref<InstanceType<typeof Cemo> | null>(null);
 
 const showEmo = () => {

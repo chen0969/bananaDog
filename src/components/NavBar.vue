@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Banana, DoorOpen, Newspaper, Settings, Key } from 'lucide-vue-next'
+import { Banana, DoorOpen, Newspaper, Key } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -16,13 +16,6 @@ import { Banana, DoorOpen, Newspaper, Settings, Key } from 'lucide-vue-next'
       active-class="text-blue-600">
       <DoorOpen :size="22" />
       <span class="text-xs">MyRoom</span>
-    </RouterLink>
-
-    <!-- setting -->
-    <RouterLink to="/Admin" class="routerLink flex h-full flex-1 flex-col items-center justify-center gap-1"
-      active-class="text-blue-600">
-      <Settings :size="22" />
-      <span class="text-xs">Admin</span>
     </RouterLink>
 
     <!-- login -->

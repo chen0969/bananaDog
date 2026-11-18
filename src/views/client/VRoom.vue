@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Parent from '../../components/client/CPimg.vue';
 import Cinfos from '../../components/client/CPinfos.vue';
-import Subfooter from '../../components/Subfooter.vue';
+import Subfooter from '../../components/client/CPSubfooter.vue';
 </script>
 
 <template>
@@ -14,7 +14,7 @@ import Subfooter from '../../components/Subfooter.vue';
     <!-- photo and basic info section -->
     <section class="aspect-square">
       <div class="static flex flex-col items-center justify-center w-full">
-        <Parent />
+        <Parent class="fixed bottom-20" />
       </div>
     </section>
 
