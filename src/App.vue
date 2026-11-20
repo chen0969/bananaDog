@@ -5,7 +5,6 @@ import { useRoute } from "vue-router";
 // 目前所在的路由資訊(route.name 就是 router/index.ts 裡每個路由的 name)
 const route = useRoute();
 
-import NavBar from './components/NavBar.vue';
 import Floor from './assets/dogDeco/floor.svg'
 
 // 投影片的順序,要和導覽列的順序一致
@@ -40,24 +39,6 @@ watch(
   <div class="overflow-x-hidden">
     <!-- RouterView 會把「目前路由對應的頁面元件」交給 Component -->
     <RouterView v-slot="{ Component }" class="h-[85vh]">
-      <!--
-        Transition:Vue 內建的轉場元件,頁面換掉時會自動套用下面的 class
-
-        mode="out-in":先讓舊頁面滑出去,再讓新頁面滑進來(一次只顯示一頁)
-
-        enter-active-class:新頁面進場「整個過程」的設定
-          transition      = 開啟動畫效果
-          duration-300    = 動畫時間 300 毫秒(想快一點改 200,慢一點改 500)
-          ease-out        = 一開始快、結尾慢
-
-        enter-from-class:新頁面「開始進場時」的起點位置
-          translate-x-full  = 在畫面右邊一整個寬度之外
-          -translate-x-full = 在畫面左邊一整個寬度之外
-
-        leave-active-class:舊頁面離場「整個過程」的設定
-
-        leave-to-class:舊頁面離場的「終點位置」
-      -->
       <Transition mode="out-in" enter-active-class="transition duration-300 ease-out"
         leave-active-class="transition duration-200 ease-in"
         :enter-from-class="forward ? 'translate-x-full opacity-0' : '-translate-x-full opacity-0'"
@@ -73,9 +54,8 @@ watch(
   </div>
 
   <!-- <NavBar /> -->
-  <footer class="min-h-[10vh] fixed bottom-0 left-0 right-0 -z-1 bg-white">
-    <img :src="Floor" alt="floor" class="w-full" />
-    <NavBar class="h-full" />
+  <footer class="min-h-[10vh]">
+    <img :src="Floor" alt="floor" class="h-full" />
   </footer>
 </template>
 
